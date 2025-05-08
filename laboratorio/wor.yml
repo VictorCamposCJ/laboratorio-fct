@@ -1,0 +1,6 @@
+- name: wordpress installation
+  hosts: monitor
+  become: yes
+  become_method: sudo
+  roles:
+    - roles-wordpress

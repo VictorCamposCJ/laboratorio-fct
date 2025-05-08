@@ -1,0 +1,31 @@
+---
+- name: Install Nextcloud on Debian
+  hosts: all
+  become: yes
+  vars:
+    nextcloud_version: "26.0.0"
+    nextcloud_domain: "mi.nextcloud.com"
+    db_root_password: "Viewnext"
+    db_name: "nextcloud"
+    db_user: "nextcloud"
+    db_password: "nextcloud"
+  tasks:
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+    - name: Download Nextcloud
+      get_url:
+        url: "https://download.nextcloud.com/server/releases/nextcloud-{{ nextcloud_version }}.zip"
+        dest: "/tmp/nextcloud.zip"
+    - name: Unzip Nextcloud
+      unarchive:
+        src: "/tmp/nextcloud.zip"
+        dest: "/var/www/html/"
+        remote_src: yes
+    - name: Set permissions for Nextcloud
+      file:
+        path: "/var/www/html/nextcloud"
+        state: directory
+        owner: www-data
+        group: www-data
+        recurse: yes

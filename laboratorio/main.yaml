@@ -1,0 +1,77 @@
+---
+- name: Grafana installation
+  hosts: monitor
+  roles:
+    - roles-grafana
+
+- name: Prometheus Installation
+  hosts: monitor
+  become: yes
+  become_method: sudo
+  roles:
+    - roles-prometheus
+
+- name: MariaDB Installation
+  hosts: mariadb
+  become: yes
+  become_method: sudo
+  ignore_unreachable: yes
+  roles:
+    - roles-mariadb
+
+- name: Apache Installation
+  hosts: apache
+  become: yes
+  become_method: sudo
+  ignore_unreachable: yes
+  roles:
+    - roles-apache
+
+- name: Nextcloud Installation
+  hosts: nextcloud
+  become: yes
+  become_method: sudo
+  ignore_unreachable: yes
+  roles:
+    - roles-nextcloud
+
+- name: Nextcloud-exporter-docker Installation
+  hosts: nextcloud
+  become: yes
+  become_method: sudo
+  ignore_unreachable: yes
+  roles:
+    - roles-nextcloud-exporter
+
+- name: Node-exporter and mysql-exporter installation
+  hosts: mariadb
+  become: yes
+  become_method: sudo
+  ignore_unreachable: yes
+  roles:
+    - roles-node-exporter
+    - roles-mysql-exporter
+
+- name: Node-exporter and apache-exporter installation
+  hosts: apache-exporter
+  become: yes
+  become_method: sudo
+  ignore_unreachable: yes
+  roles:
+    - roles-node-exporter
+    - roles-apache-exporter
+
+- name: php installation
+  hosts: monitor
+  become: yes
+  become_method: sudo
+  roles:
+    - roles-php
+
+- name: wordpress installation
+  hosts: monitor
+  become: yes
+  become_method: sudo
+  roles:
+    - roles-wordpress
+...

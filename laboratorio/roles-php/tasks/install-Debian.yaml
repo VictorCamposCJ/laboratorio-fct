@@ -1,0 +1,35 @@
+---
+
+#Desinstalar php
+
+- name: Desisntalar php
+  apt:
+    name: php
+    state: absent
+
+# Install required packages
+- name: install required packages
+  apt:
+    name:
+      - php
+      - php-bcmath
+      - php-curl
+      - php-gmp
+      - php-imagick
+      - php-intl
+      - php-zip
+      - php-apcu
+      - php-fpm
+      - php-gd
+      - php-xml
+      - php-mbstring
+      - php-mysql
+    state: latest
+
+# Restart Apache2
+- name: Restart Apache2 service
+  service:
+    name: apache2
+    state: restarted
+
+...

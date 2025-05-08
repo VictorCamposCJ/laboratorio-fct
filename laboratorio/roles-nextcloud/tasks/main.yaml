@@ -1,0 +1,20 @@
+---
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+    - name: Download Nextcloud
+      get_url:
+        url: "https://download.nextcloud.com/server/releases/nextcloud-{{ nextcloud_version }}.zip"
+        dest: "/tmp/nextcloud.zip"
+    - name: Unzip Nextcloud
+      unarchive:
+        src: "/tmp/nextcloud.zip"
+        dest: "/var/www/html/"
+        remote_src: yes
+    - name: Set permissions for Nextcloud
+      file:
+        path: "/var/www/html/nextcloud"
+        state: directory
+        owner: www-data
+        group: www-data
+        recurse: yes

@@ -1,0 +1,58 @@
+---
+# tasks file for roles-wordpress
+
+#- name: Permitir tráfico HTTP a través del firewall
+#  command:
+#      cmd: ufw allow http
+
+- name: Allow port 80
+  ufw:
+    rule: allow
+    port: 80
+
+- name: Permitir tráfico HTTPS a través del firewall
+  command:
+      cmd: ufw reload
+
+# - name:  iusbpihjfbw
+#    service:
+#      name. ufw
+#      state: restarted
+
+- name: Recargar firewall
+  command:
+      cmd: ufw reload
+
+- name: Iniciar Apache web server
+  service:
+         name: apache2
+         state: started
+         enabled: true
+
+- name: Copiar ficheros de Wordpress(instalación)
+  unarchive:
+          src: https://wordpress.org/latest.tar.gz
+          dest: /var/www/html
+          remote_src: yes
+          owner: www-data
+          group: www-data
+          mode: '0755'
+
+
+- name: Establecer configuración de Wordpress
+  template:
+        src: /home/ansible/Ansible-project/Proyecto/laboratorio/roles-wordpress/files/recursos/wp-config.php
+        dest: /var/www/html/wordpress/wp-config.php
+        owner: www-data
+        group: www-data
+        mode: '0644'
+
+- name: Reiniciar Apache web server
+  service:
+        name: apache2
+        state: restarted
+
+- name: Reiniciar servidor
+  reboot:
+        reboot_timeout: 60
+        post_reboot_delay: 30

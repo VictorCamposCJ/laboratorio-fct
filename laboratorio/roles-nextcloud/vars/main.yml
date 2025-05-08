@@ -1,0 +1,11 @@
+---
+# vars file for roles-nextcloud
+
+    nextcloud_version: "26.0.0"
+    nextcloud_domain: "mi.nextcloud.com"
+    db_root_password: "Viewnext"
+    db_name: "nextcloud"
+    db_user: "nextcloud"
+    db_password: "nextcloud"
+
+...

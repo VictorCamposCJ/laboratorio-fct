@@ -1,0 +1,23 @@
+---
+    - name: Ensure Docker is installed
+      apt:
+        name: docker.io
+        state: present
+        update_cache: yes
+    - name: Download Nextcloud Exporter Docker image
+      docker_image:
+        name: ghcr.io/xperimental/nextcloud-exporter
+        source: pull
+    - name: Run Nextcloud Exporter Docker container
+      docker_container:
+        name: nextcloud-exporter
+        image: ghcr.io/xperimental/nextcloud-exporter
+        state: started
+        restart_policy: unless-stopped
+        ports:
+          - "9205:9205"
+        env:
+          NEXTCLOUD_SERVER: "http://localhost/nextcloud"
+          NEXTCLOUD_USERNAME: "nextcloud"
+          NEXTCLOUD_PASSWORD: "nextcloud"
+...
