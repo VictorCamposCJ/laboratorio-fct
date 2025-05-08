@@ -1,4 +1,0 @@
----
-# tasks file for roles
-- include_tasks: "apache2-{{ ansible_os_family }}.yaml"
-...
