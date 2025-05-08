@@ -1,6 +1,0 @@
----
-- name: Grafana installation
-  hosts: monitor
-  roles:
-    - roles
-...
