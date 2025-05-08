@@ -1,4 +1,0 @@
----
-# tasks/main.yml
-- include_tasks: "prometheus.yaml"
-...
