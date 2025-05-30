@@ -1,3 +1,88 @@
 ---
-# tasks file for mysql
-- include_tasks: mysql.yaml
+- name: Create prometheus user
+  user:
+    name: "{{ prometheus_user }}"
+    system: yes
+    shell: "/sbin/nologin"
+    create_home: no
+
+- name: Install UFW if not present
+  apt:
+    name: ufw
+    state: present
+  become: true
+
+- name: Allow trafic for mysqld_exporter (9104/tcp)
+  ufw:
+    rule: allow
+    port: "9104"
+    proto: tcp
+  become: true
+
+- name: Enable UFW
+  ufw:
+    state: enabled
+  become: true
+
+- name: Create MySQL exporter user with necessary privileges
+  mysql_user:
+    name: exporter
+    password: usuario
+    priv: "*.*:PROCESS,REPLICATION CLIENT"
+    host: "%"
+    state: present
+
+- name: Download MySQL Exporter
+  get_url:
+    url: "https://github.com/prometheus/mysqld_exporter/releases/download/v{{ mysql_exporter_version }}/mysqld_exporter-{{ mysql_exporter_version }}.linux-amd64.tar.gz"
+    dest: "/tmp/mysqld_exporter.tar.gz"
+
+- name: Extract MySQL Exporter
+  unarchive:
+    src: "/tmp/mysqld_exporter.tar.gz"
+    dest: "/usr/local/bin/"
+    remote_src: yes
+    extra_opts: ["--strip-components=1"]
+
+- name: Set permissions for MySQL Exporter
+  file:
+    path: "/usr/local/bin/mysqld_exporter"
+    owner: "{{ prometheus_user }}"
+    group: "{{ prometheus_group }}"
+    mode: '0755'
+
+- name: Create configuration file for MySQL Exporter
+  copy:
+    dest: "/etc/.mysqld_exporter.cnf"
+    content: |
+      [client]
+      user=exporter
+      password=usuario
+      host=172.26.0.130
+    owner: "{{ prometheus_user }}"
+    group: "{{ prometheus_group }}"
+    mode: '0600'
+
+- name: Create systemd service for MySQL Exporter
+  copy:
+    dest: "/etc/systemd/system/mysqld_exporter.service"
+    content: |
+      [Unit]
+      Description=Prometheus MySQL Exporter
+      After=network.target
+
+      [Service]
+      User={{ prometheus_user }}
+      ExecStart=/usr/local/bin/mysqld_exporter --config.my-cnf=/etc/.mysqld_exporter.cnf --web.listen-address=0.0.0.0:9104
+      Restart=always
+
+      [Install]
+      WantedBy=multi-user.target
+
+- name: Reload systemd & enable MySQL Exporter service
+  systemd:
+    daemon_reload: yes
+    name: mysqld_exporter
+    enabled: yes
+    state: started
+...

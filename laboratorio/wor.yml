@@ -1,6 +1,6 @@
-- name: wordpress installation
-  hosts: monitor
+- name: mysql exporter installation
+  hosts: localhost
   become: yes
   become_method: sudo
   roles:
-    - roles-wordpress
+    - roles-mysql-exporter

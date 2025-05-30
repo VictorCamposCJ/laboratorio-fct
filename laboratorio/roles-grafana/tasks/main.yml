@@ -1,3 +1,31 @@
 ---
-# tasks file for elastic
-- include_tasks: "install-{{ ansible_os_family }}.yaml"
+#-----------------------Instalación Grafana Debian-----------------------
+- name: Add Grafana GPG key
+  apt_key:
+    url: "{{ grafana_install_gpg_key }}"
+    state: present
+
+- name: Add Grafana APT repository
+  apt_repository:
+    repo: "{{ grafana_install_repo }}"
+    state: present
+    filename: grafana
+    update_cache: yes
+
+- name: Install Grafana
+  apt:
+    name: grafana
+    state: present
+    update_cache: yes
+
+- name: Enable and start grafana service
+  service:
+    name: grafana-server
+    state: started
+    enabled: yes
+
+- name: Ensure Grafana service restarted
+  service:
+    name: grafana-server
+    state: restarted
+...

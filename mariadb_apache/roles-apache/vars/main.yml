@@ -1,5 +1,0 @@
----
-# vars file for roles
-proxy: /etc/apache2/sites-available/000-default.conf
-html: /var/www/html
-selinux: /etc/selinux/config
