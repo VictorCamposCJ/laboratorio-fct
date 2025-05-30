@@ -1,6 +1,0 @@
-- name: mysql exporter installation
-  hosts: localhost
-  become: yes
-  become_method: sudo
-  roles:
-    - roles-mysql-exporter
