@@ -4,6 +4,7 @@ Este proyecto contiene varios roles de Ansible para la instalación y configurac
 Requisitos
 
 Sistema Operativo: Debian
+
 Software Necesario:
 Git
 Ansible
@@ -14,11 +15,11 @@ Instalar Ansible: sudo apt update sudo apt install ansible -y
 
 Clonar el Repositorio
 Para clonar el repositorio, ejecuta el siguiente comando:
-git clone <URL-del-repositorio>
+git clone https://github.com/VictorCamposCJ/laboratorio-fct.git
 
 Entrar al Directorio laboratorio
 Una vez clonado el repositorio, entra al directorio laboratorio:
-cd <nombre-del-repositorio>/laboratorio
+cd laboratorio-fct/laboratorio
 
 Ejecutar el Playbook
 Para iniciar la instalación, ejecuta el siguiente comando:
@@ -38,7 +39,8 @@ roles-php
 roles-prometheus
 roles-wordpress
 
-Notas
+Notas:
+
 Asegúrate de que todos los requisitos estén instalados antes de ejecutar el playbook. Si tienes alguna pregunta o problema, no dudes en abrir una issue en el repositorio.
 
 ¡Gracias por usar este proyecto!

@@ -1,10 +1,6 @@
 ---
 # tasks file for roles-wordpress
 
-#- name: Permitir tráfico HTTP a través del firewall
-#  command:
-#      cmd: ufw allow http
-
 - name: Allow port 80
   ufw:
     rule: allow
@@ -13,11 +9,6 @@
 - name: Permitir tráfico HTTPS a través del firewall
   command:
       cmd: ufw reload
-
-# - name:  iusbpihjfbw
-#    service:
-#      name. ufw
-#      state: restarted
 
 - name: Recargar firewall
   command:
